@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block main %}
+<h1>Your Portfolio 😊</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>TOTAL</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="4"></td>
+            <td>{{ grand_total }}</td>
+            <td></td>
+        </tr>
+    </tfoot>
+    <tbody>
+        {% for p in portfolios %}
+        <tr>
+            <td>{{ p['symbol'] }}</td>
+            <td>{{ p['name'] }}</td>
+            <td>{{ p['qty'] }}</td>
+            <td>{{ p['price'] }}</td>
+            <td>{{ p['total'] }}</td>
+            <td class="action">
+                <a href="/buy?symbol={{ p['symbol'] }}" class="btn btn-primary">Buy</a>
+                <a href="/sell?symbol={{ p['symbol'] }}" class="btn btn-warning">Sell</a>
+                <form action="/sell" method="post">
+                    <input type="hidden" name="symbol" value="{{ p['symbol'] }}">
+                    <input type="hidden" name="shares" value="{{ p['qty'] }}">
+                    <button class="btn btn-danger" type="submit">Sell All</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td>CASH</td>
+            <td colspan="3"></td>
+            <td>{{ cash }}</td>
+            <td class=action>
+                <a class="btn btn-success" href="/add-cash">Add Cash</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
